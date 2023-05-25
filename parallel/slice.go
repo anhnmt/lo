@@ -11,6 +11,7 @@ func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
 	wg.Add(len(collection))
 
 	for i, item := range collection {
+		i, item := i, item
 		go func(_item T, _i int) {
 			res := iteratee(_item, _i)
 
@@ -32,6 +33,7 @@ func ForEach[T any](collection []T, iteratee func(item T, index int)) {
 	wg.Add(len(collection))
 
 	for i, item := range collection {
+		i, item := i, item
 		go func(_item T, _i int) {
 			iteratee(_item, _i)
 			wg.Done()
@@ -75,6 +77,7 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(item T) U) map[U
 	wg.Add(len(collection))
 
 	for _, item := range collection {
+		item := item
 		go func(_item T) {
 			key := iteratee(_item)
 
@@ -105,6 +108,7 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(item T) K) [
 	wg.Add(len(collection))
 
 	for _, item := range collection {
+		item := item
 		go func(_item T) {
 			key := iteratee(_item)
 

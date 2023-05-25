@@ -12,6 +12,7 @@ func Filter[V any](collection []V, predicate func(item V, index int) bool) []V {
 	result := make([]V, 0, len(collection))
 
 	for i, item := range collection {
+		item := item
 		if predicate(item, i) {
 			result = append(result, item)
 		}
@@ -26,6 +27,7 @@ func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
 	result := make([]R, len(collection))
 
 	for i, item := range collection {
+		i, item := i, item
 		result[i] = iteratee(item, i)
 	}
 
@@ -42,6 +44,7 @@ func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R
 	result := []R{}
 
 	for i, item := range collection {
+		i, item := i, item
 		if r, ok := callback(item, i); ok {
 			result = append(result, r)
 		}
@@ -58,6 +61,7 @@ func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R)
 	result := make([]R, 0, len(collection))
 
 	for i, item := range collection {
+		i, item := i, item
 		result = append(result, iteratee(item, i)...)
 	}
 
@@ -69,6 +73,7 @@ func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R)
 // Play: https://go.dev/play/p/R4UHXZNaaUG
 func Reduce[T any, R any](collection []T, accumulator func(agg R, item T, index int) R, initial R) R {
 	for i, item := range collection {
+		i, item := i, item
 		initial = accumulator(initial, item, i)
 	}
 
@@ -89,6 +94,7 @@ func ReduceRight[T any, R any](collection []T, accumulator func(agg R, item T, i
 // Play: https://go.dev/play/p/oofyiUPRf8t
 func ForEach[T any](collection []T, iteratee func(item T, index int)) {
 	for i, item := range collection {
+		i, item := i, item
 		iteratee(item, i)
 	}
 }
@@ -114,6 +120,7 @@ func Uniq[T comparable](collection []T) []T {
 	seen := make(map[T]struct{}, len(collection))
 
 	for _, item := range collection {
+		item := item
 		if _, ok := seen[item]; ok {
 			continue
 		}
@@ -134,6 +141,7 @@ func UniqBy[T any, U comparable](collection []T, iteratee func(item T) U) []T {
 	seen := make(map[U]struct{}, len(collection))
 
 	for _, item := range collection {
+		item := item
 		key := iteratee(item)
 
 		if _, ok := seen[key]; ok {
@@ -153,6 +161,7 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(item T) U) map[U
 	result := map[U][]T{}
 
 	for _, item := range collection {
+		item := item
 		key := iteratee(item)
 
 		result[key] = append(result[key], item)
@@ -196,6 +205,7 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(item T) K) [
 	seen := map[K]int{}
 
 	for _, item := range collection {
+		item := item
 		key := iteratee(item)
 
 		resultIndex, ok := seen[key]
@@ -220,11 +230,13 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(item T) K) [
 func Flatten[T any](collection [][]T) []T {
 	totalLen := 0
 	for i := range collection {
+		i := i
 		totalLen += len(collection[i])
 	}
 
 	result := make([]T, 0, totalLen)
 	for i := range collection {
+		i := i
 		result = append(result, collection[i]...)
 	}
 
@@ -241,6 +253,7 @@ func Interleave[T any](collections ...[]T) []T {
 	maxSize := 0
 	totalSize := 0
 	for _, c := range collections {
+		c := c
 		size := len(c)
 		totalSize += size
 		if size > maxSize {

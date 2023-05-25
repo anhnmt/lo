@@ -3,6 +3,7 @@ package lo
 // Contains returns true if an element is present in a collection.
 func Contains[T comparable](collection []T, element T) bool {
 	for _, item := range collection {
+		item := item
 		if item == element {
 			return true
 		}
@@ -14,6 +15,7 @@ func Contains[T comparable](collection []T, element T) bool {
 // ContainsBy returns true if predicate function return true.
 func ContainsBy[T any](collection []T, predicate func(item T) bool) bool {
 	for _, item := range collection {
+		item := item
 		if predicate(item) {
 			return true
 		}
@@ -25,6 +27,7 @@ func ContainsBy[T any](collection []T, predicate func(item T) bool) bool {
 // Every returns true if all elements of a subset are contained into a collection or if the subset is empty.
 func Every[T comparable](collection []T, subset []T) bool {
 	for _, elem := range subset {
+		elem := elem
 		if !Contains(collection, elem) {
 			return false
 		}
@@ -36,6 +39,7 @@ func Every[T comparable](collection []T, subset []T) bool {
 // EveryBy returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
 func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 	for _, v := range collection {
+		v := v
 		if !predicate(v) {
 			return false
 		}
@@ -48,6 +52,7 @@ func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 // If the subset is empty Some returns false.
 func Some[T comparable](collection []T, subset []T) bool {
 	for _, elem := range subset {
+		elem := elem
 		if Contains(collection, elem) {
 			return true
 		}
@@ -60,6 +65,7 @@ func Some[T comparable](collection []T, subset []T) bool {
 // If the collection is empty SomeBy returns false.
 func SomeBy[T any](collection []T, predicate func(item T) bool) bool {
 	for _, v := range collection {
+		v := v
 		if predicate(v) {
 			return true
 		}
@@ -71,6 +77,7 @@ func SomeBy[T any](collection []T, predicate func(item T) bool) bool {
 // None returns true if no element of a subset are contained into a collection or if the subset is empty.
 func None[T comparable](collection []T, subset []T) bool {
 	for _, elem := range subset {
+		elem := elem
 		if Contains(collection, elem) {
 			return false
 		}
@@ -82,6 +89,7 @@ func None[T comparable](collection []T, subset []T) bool {
 // NoneBy returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
 func NoneBy[T any](collection []T, predicate func(item T) bool) bool {
 	for _, v := range collection {
+		v := v
 		if predicate(v) {
 			return false
 		}
@@ -96,10 +104,12 @@ func Intersect[T comparable](list1 []T, list2 []T) []T {
 	seen := map[T]struct{}{}
 
 	for _, elem := range list1 {
+		elem := elem
 		seen[elem] = struct{}{}
 	}
 
 	for _, elem := range list2 {
+		elem := elem
 		if _, ok := seen[elem]; ok {
 			result = append(result, elem)
 		}
@@ -119,20 +129,24 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 	seenRight := map[T]struct{}{}
 
 	for _, elem := range list1 {
+		elem := elem
 		seenLeft[elem] = struct{}{}
 	}
 
 	for _, elem := range list2 {
+		elem := elem
 		seenRight[elem] = struct{}{}
 	}
 
 	for _, elem := range list1 {
+		elem := elem
 		if _, ok := seenRight[elem]; !ok {
 			left = append(left, elem)
 		}
 	}
 
 	for _, elem := range list2 {
+		elem := elem
 		if _, ok := seenLeft[elem]; !ok {
 			right = append(right, elem)
 		}
@@ -148,7 +162,9 @@ func Union[T comparable](lists ...[]T) []T {
 	seen := map[T]struct{}{}
 
 	for _, list := range lists {
+		list := list
 		for _, e := range list {
+			e := e
 			if _, ok := seen[e]; !ok {
 				seen[e] = struct{}{}
 				result = append(result, e)
@@ -163,6 +179,7 @@ func Union[T comparable](lists ...[]T) []T {
 func Without[T comparable](collection []T, exclude ...T) []T {
 	result := make([]T, 0, len(collection))
 	for _, e := range collection {
+		e := e
 		if !Contains(exclude, e) {
 			result = append(result, e)
 		}
@@ -176,6 +193,7 @@ func WithoutEmpty[T comparable](collection []T) []T {
 
 	result := make([]T, 0, len(collection))
 	for _, e := range collection {
+		e := e
 		if e != empty {
 			result = append(result, e)
 		}
